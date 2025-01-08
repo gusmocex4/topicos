@@ -4,7 +4,7 @@ const bromaSchema = new mongoose.Schema({
     texto: { 
         type: String, 
         required: true 
-    }, // Texto del chiste (requerido)
+    }, // Texto del chiste (requerido)aa
     autor: { 
         type: String, 
         default: 'Se perdió en el Ávila como Led' 

@@ -50,8 +50,8 @@ app.post('/bromas/:parametro', async (req, res) => {
             break;
         case 'Dad Joke':
             try {
-                const response = await axios.get('https://icanhazdadjoke.com/');
-                res.json({ joke: response.data.joke });
+                const response = await axios.get('https://icanhazdadjoke.com/api');
+                res.json({ joke: response.data.value });
             } catch (error) {
                 console.error('Error fetching joke:', error);
                 res.status(500).json({ error: 'Error en traer la broma de icanhazdadjoke' });
