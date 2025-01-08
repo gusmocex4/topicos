@@ -14,6 +14,7 @@
 # Codigo para correr la applicacion
 ---
 ` npm install`
+`npm install axios` 
 `docker compose -f docker-compose.local.yml up --build`
 y correr los comando en comandos en powerShell
 
