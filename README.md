@@ -1,6 +1,8 @@
 # Proyecto de topicos
 ### Pequeña Documentaciòn
 ---
+| Grupo | N1 |
+| NCR| 16343 |
 # Integrantes
 
 | Nombre y Apellido | Uuasrio de github |
