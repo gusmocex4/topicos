@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 
-import { User } from './user.js';
+import { Broma } from './broma.js';
 
 const app= express()
 const port=3005
@@ -35,30 +35,65 @@ app.listen(port,() => {
     connectDB()
 })
 
-app.get('/Waza', async(req,res)=>{   // siempre se empieza con el /, y la funcion debe tener 2 valores req y res
-    res.status(200).send('hola mundo, mi primera API! WAZAAAA')
-})
-
-app.get('/Julio', async(req,res)=>{   // siempre se empieza con el /, y la funcion debe tener 2 valores req y res
-    res.status(200).send('bombardeen peru')
-})
-
-app.post('/mondongo',async(req,res)=>{
+// Ruta para crear una nueva broma
+app.post('/bromas:parametro', async (req, res) => {
+    
+    
     try {
-        var data=req.body
-        var newUser =new User(data)
-        await newUser.save()
-        res.status(200).send('Se creo el usuario exitosamente')
-    } catch (err) {
-        res.status(400).send('Error al crear el usuario')
+        const nuevaBroma = new Broma(req.body);
+        await nuevaBroma.save();
+        res.status(201).json(nuevaBroma);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-})
+});
 
-app.get('/termo', async(req,res)=>{  
+// Ruta para obtener todas las bromas
+app.get('/bromas', async (req, res) => {
     try {
-        var usuario=await User.find().exec()
-        res.status(200).send(usuario)
-    } catch (err) {
-        res.status(400).send('Error al obtener')
+        const bromas = await Broma.find();
+        res.json(bromas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-})
+});
+
+// Ruta para obtener una broma por ID
+app.get('/bromas/:id', async (req, res) => {
+    try {
+        const broma = await Broma.findById(req.params.id);
+        if (!broma) {
+            return res.status(404).json({ message: 'Broma no encontrada' });
+        }
+        res.json(broma);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Ruta para actualizar una broma por ID
+app.put('/bromas/:id', async (req, res) => {
+    try {
+        const bromaActualizada = await Broma.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!bromaActualizada) {
+            return res.status(404).json({ message: 'Broma no encontrada' });
+        }
+        res.json(bromaActualizada);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Ruta para eliminar una broma por ID
+app.delete('/bromas/:id', async (req, res) => {
+    try {
+        await Broma.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Broma eliminada' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+});
