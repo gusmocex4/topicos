@@ -123,7 +123,7 @@ app.delete('/bromas/:id', async (req, res) => {
     }
 });
 
-app.get('/chistes/categoria/:categoria', async (req, res) => {
+app.get('/bromas/categoria/:categoria', async (req, res) => {
     const categoria = req.params.categoria;
 
     try {
@@ -141,7 +141,7 @@ app.get('/chistes/categoria/:categoria', async (req, res) => {
 
 
 
-app.get('/chistes/puntaje/:puntaje', async (req, res) => {
+app.get('/bromas/puntaje/:puntaje', async (req, res) => {
     const puntaje = parseInt(req.params.puntaje);
 
     try {
