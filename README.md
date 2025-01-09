@@ -7,18 +7,20 @@
 |---|---|
 | Gustavo Morales | gusmocex4 |
 | Victor Paredes | ItzV89 |
+| Julio Figueredo | Julito16 |
 
 # Codigo para correr la applicacion
 ---
 `docker-compose -f docker-compose.local.yml up --build`
+`npm start`
 
 ---
 
 # TO DO
 ---
 [x] Aplicacion base funcione.
-[] Schema de chiste
-[] Crud de chiste basico
-[] Modificar el get para que acepte busque chistes en las apis
-[] Primer quary
-[] Segundo quary
+[x] Schema de chiste
+[x] Crud de chiste basico
+[x] Modificar el get para que acepte busque chistes en las apis
+[x] Primer quary
+[x] Segundo quary
