@@ -94,6 +94,49 @@ app.delete('/bromas/:id', async (req, res) => {
     }
 });
 
+
+
+app.get('/chistes/categoria/:categoria', async (req, res) => {
+    const categoria = req.params.categoria;
+
+    try {
+        const cantidad = await Chiste.countDocuments({ categoria: categoria });
+
+        if (cantidad === 0) {
+            return res.status(404).send(<h1>Error: No hay chistes en la categoría "${categoria}".</h1>);
+        }
+
+        res.send(<h1>Cantidad de chistes en la categoría "${categoria}": ${cantidad}</h1>);
+    } catch (error) {
+        res.status(500).send('<h1>Error al obtener la cantidad de chistes.</h1>');
+    }
+});
+
+
+
+app.get('/chistes/puntaje/:puntaje', async (req, res) => {
+    const puntaje = parseInt(req.params.puntaje);
+
+    try {
+        const chistes = await Chiste.find({ puntaje: puntaje });
+
+        if (chistes.length === 0) {
+            return res.status(404).send(<h1>Error: No hay chistes con el puntaje ${puntaje}.</h1>);
+        }
+
+        // Crear un string HTML para mostrar los chistes
+        let htmlResponse = '<h1>Chistes con puntaje ' + puntaje + ':</h1><ul>';
+        chistes.forEach(chiste => {
+            htmlResponse += <li>${chiste.texto} - ${chiste.categoria}</li>;
+        });
+        htmlResponse += '</ul>';
+
+        res.send(htmlResponse);
+    } catch (error) {
+        res.status(500).send('<h1>Error al obtener los chistes.</h1>');
+    }
+});
+
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
