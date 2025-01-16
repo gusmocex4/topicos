@@ -1,0 +1,107 @@
+En el power shell se ejecutan estos comandos 
+
+. GET: Obtener todas las bromas
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas" -Method Get
+
+
+2. GET: Obtener una broma específica por su ID
+Primero, necesitas un ID válido de una broma. Supongamos que el ID es 1234567890abcdef12345678.
+
+$chisteId = "1234567890abcdef12345678"
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Get
+
+3. POST: Agregar una nueva broma y broma sin autor
+
+$body = @{
+    texto = "¿Por qué los programadores prefieren el oscuro? Porque la luz atrae bugs."
+    autor = "Anónimo"
+    puntaje = 8
+    categoria = "Chistoso"
+}
+
+
+$body = @{
+    texto = "¿Por qué los programadores prefieren el oscuro? Porque la luz atrae bugs."
+    
+    puntaje = 8
+    categoria = "Chistoso"
+}
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/Propio" -Method Post -ContentType "application/json" -Body ($body | ConvertTo-Json)
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/Propio" -Method Post -ContentType "application/json" -Body ($body | ConvertTo-Json)
+
+4. PUT: Actualizar una broma existente
+Primero, necesitas un ID válido de una broma que deseas actualizar. Supongamos que el ID es 1234567890abcdef12345678.
+
+
+$chisteId = "1234567890abcdef12345678"
+$body = @{
+    texto = "¿Por qué los programadores prefieren el oscuro? Porque la luz atrae bugs."
+    autor = "Anónimo"
+    puntaje = 9
+    categoria = "Chistoso"
+}
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Put -ContentType "application/json" -Body ($body | ConvertTo-Json)
+
+5. DELETE: Eliminar una broma existente
+Primero, necesitas un ID válido de una broma que deseas eliminar. Supongamos que el ID es 1234567890abcdef12345678.
+
+$chisteId = "1234567890abcdef12345678"
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Delete
+
+Resumen de los comandos:
+GET todas las bromas:
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas" -Method Get
+
+GET una broma específica:
+
+$chisteId = "1234567890abcdef12345678"
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Get
+
+POST agregar una nueva broma:
+
+$body = @{
+    texto = "¿Por qué los programadores prefieren el oscuro? Porque la luz atrae bugs."
+    autor = "Anónimo"
+    puntaje = 8
+    categoria = "Chistoso"
+}
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/Propio" -Method Post -ContentType "application/json" -Body ($body | ConvertTo-Json)
+
+PUT actualizar una broma existente:
+
+$chisteId = "1234567890abcdef12345678"
+$body = @{
+    texto = "¿Por qué los programadores prefieren el oscuro? Porque la luz atrae bugs."
+    autor = "Anónimo"
+    puntaje = 9
+    categoria = "Chistoso"
+}
+
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Put -ContentType "application/json" -Body ($body | ConvertTo-Json)
+
+
+DELETE eliminar una broma existente:
+
+
+$chisteId = "1234567890abcdef12345678"
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/$chisteId" -Method Delete
+
+
+
+Resumen de los comandos:
+GET bromas por categoría:
+
+
+$categoria = "Chistoso"
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/categoria/$categoria" -Method Get
+
+GET bromas por puntaje:
+
+$puntaje = 5
+Invoke-RestMethod -Uri "http://localhost:3005/bromas/puntaje/$puntaje" -Method Get
