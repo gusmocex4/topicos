@@ -4,7 +4,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import axios from 'axios';
 import { Broma } from './broma.js';
-//import { Broma } from './broma.js'; // Asegúrate de que este modelo esté correctamente definido
 
 const app = express();
 const port = 3005;
@@ -28,18 +27,16 @@ const connectDB = async () => {
     const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
     try {
-        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-        console.log('MongoDB está corriendo');
-    } catch (err) {
-        console.error('Error conectándose a MongoDB:', err.message);
+        await mongoose.connect(url);
+        console.log('Conexión a la base de datos exitosa');
+    } catch (error) {
+        console.error('Error al conectar a la base de datos', error);
     }
 };
 
-// Llamar a la función para conectar a la base de datos
 connectDB();
 
-// Rutas
-// Ruta para crear una nueva broma
+
 app.post('/bromas/:parametro', async (req, res) => {
     switch (req.params.parametro) {
         case 'Chuck':
@@ -53,8 +50,8 @@ app.post('/bromas/:parametro', async (req, res) => {
             break;
         case 'Dad Joke':
             try {
-                const response = await axios.get('https://icanhazdadjoke.com/api');
-                res.json({ joke: response.data.value });
+                const response = await axios.get('https://icanhazdadjoke.com/');
+                res.json({ joke: response.data.joke });
             } catch (error) {
                 console.error('Error fetching joke:', error);
                 res.status(500).json({ error: 'Error en traer la broma de icanhazdadjoke' });
@@ -74,7 +71,8 @@ app.post('/bromas/:parametro', async (req, res) => {
     }
 });
 
-// Ruta para obtener todas las bromas
+
+// Rutas
 app.get('/bromas', async (req, res) => {
     try {
         const bromas = await Broma.find();
@@ -84,7 +82,6 @@ app.get('/bromas', async (req, res) => {
     }
 });
 
-// Ruta para obtener una broma por ID
 app.get('/bromas/:id', async (req, res) => {
     try {
         const broma = await Broma.findById(req.params.id);
@@ -97,7 +94,6 @@ app.get('/bromas/:id', async (req, res) => {
     }
 });
 
-// Ruta para actualizar una broma por ID
 app.put('/bromas/:id', async (req, res) => {
     try {
         const bromaActualizada = await Broma.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -106,11 +102,10 @@ app.put('/bromas/:id', async (req, res) => {
         }
         res.json(bromaActualizada);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 });
 
-// Ruta para eliminar una broma por ID
 app.delete('/bromas/:id', async (req, res) => {
     try {
         const bromaEliminada = await Broma.findByIdAndDelete(req.params.id);
@@ -127,37 +122,35 @@ app.get('/bromas/categoria/:categoria', async (req, res) => {
     const categoria = req.params.categoria;
 
     try {
-        const cantidad = await Chiste.countDocuments({ categoria: categoria });
+        const cantidad = await Broma.countDocuments({ categoria: categoria });
 
         if (cantidad === 0) {
-            return res.status(404).send(<h1>Error: No hay chistes en la categoría "${categoria}".</h1>);
+            return res.status(404).send(`<h1>Error: No hay chistes en la categoría "${categoria}".</h1>`);
         }
 
-        res.send(<h1>Cantidad de chistes en la categoría "${categoria}": ${cantidad}</h1>);
+        res.send(`<h1>Cantidad de chistes en la categoría "${categoria}": ${cantidad}</h1>`);
     } catch (error) {
         res.status(500).send('<h1>Error al obtener la cantidad de chistes.</h1>');
     }
 });
 
-
-
 app.get('/bromas/puntaje/:puntaje', async (req, res) => {
     const puntaje = parseInt(req.params.puntaje);
 
     try {
-        const chistes = await Chiste.find({ puntaje: puntaje });
+        const chistes = await Broma.find({ puntaje: puntaje });
 
         if (chistes.length === 0) {
-            return res.status(404).send(<h1>Error: No hay chistes con el puntaje ${puntaje}.</h1>);
+            return res.status(404).send(`<h1>Error: No hay chistes con el puntaje ${puntaje}.</h1>`);
         }
-
+        
         // Crear un string HTML para mostrar los chistes
-        let htmlResponse = '<h1>Chistes con puntaje ' + puntaje + ':</h1><ul>';
+        let htmlResponse = `<h1>Chistes con puntaje ${puntaje}:</h1><ul>`;
         chistes.forEach(chiste => {
-            htmlResponse += <li>${chiste.texto} - ${chiste.categoria}</li>;
+            htmlResponse += `<li>${chiste.texto} - ${chiste.categoria}</li>`;
         });
         htmlResponse += '</ul>';
-
+        
         res.send(htmlResponse);
     } catch (error) {
         res.status(500).send('<h1>Error al obtener los chistes.</h1>');
