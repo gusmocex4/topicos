@@ -15,6 +15,7 @@
 ---
 ` npm install`
 `docker compose -f docker-compose.local.yml up --build`
+y correr los comando en comandos en powerShell
 
 ---
 
