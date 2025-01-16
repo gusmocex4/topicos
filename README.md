@@ -13,8 +13,8 @@
 
 # Codigo para correr la applicacion
 ---
-`docker-compose -f docker-compose.local.yml up --build`
-`npm start`
+` npm install`
+`docker compose -f docker-compose.local.yml up --build`
 
 ---
 
